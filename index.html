@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cash Out Gold & Silver Daily Register</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">WE BUY GOLD</div>
+      <div>
+        <h1>Cash Out Gold & Silver</h1>
+        <p>Daily Gold & Silver Register</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="saveBtn">Save</button>
+      <button id="printBtn">Print / PDF</button>
+      <button id="csvBtn">Export CSV</button>
+      <button id="clearBtn" class="danger">Clear Day</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="cards">
+      <label>Date <input id="date" type="date"></label>
+      <label>Employee <input id="employee" placeholder="Employee name"></label>
+      <label>Starting Cash <input id="startingCash" type="number" step="0.01" placeholder="0.00"></label>
+      <label>Total Cash Out <input id="totalCashOut" type="number" step="0.01" placeholder="0.00"></label>
+      <div class="balanceCard">
+        <span>Balance</span>
+        <strong id="balance">$0.00</strong>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panelHead">
+        <h2>Au — Gold</h2>
+        <button id="addGoldRow">+ New Gold Row</button>
+      </div>
+      <div class="tableWrap">
+        <table id="goldTable">
+          <thead>
+            <tr>
+              <th>Time</th><th>Receipt #</th><th>Cash Paid</th>
+              <th>8K</th><th>9K</th><th>10K</th><th>14K</th><th>18K</th><th>21K</th><th>22K</th><th>24K</th>
+              <th>Other</th><th>Notes</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2">Daily Total</th>
+              <th id="goldCashTotal">$0.00</th>
+              <th id="tot8">0.0</th><th id="tot9">0.0</th><th id="tot10">0.0</th><th id="tot14">0.0</th><th id="tot18">0.0</th><th id="tot21">0.0</th><th id="tot22">0.0</th><th id="tot24">0.0</th>
+              <th colspan="3"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="summaryGrid">
+        <div><span>Gold Cash</span><strong id="goldCash">$0.00</strong></div>
+        <div><span>Pure Gold DWT</span><strong id="pureDwt">0.00</strong></div>
+        <div><span>Pure Troy OZ</span><strong id="pureOz">0.0000</strong></div>
+        <div><span>Total Gold DWT</span><strong id="goldDwt">0.00</strong></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panelHead">
+        <h2>Ag — Silver</h2>
+        <button id="addSilverRow">+ New Silver Row</button>
+      </div>
+      <div class="tableWrap">
+        <table id="silverTable">
+          <thead>
+            <tr>
+              <th>Time</th><th>Receipt #</th><th>Cash Paid</th>
+              <th>.999</th><th>.925</th><th>.900</th><th>.800</th><th>.600</th><th>.400</th>
+              <th>Other</th><th>Notes</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2">Daily Total</th>
+              <th id="silverCashTotal">$0.00</th>
+              <th id="s999">0.0</th><th id="s925">0.0</th><th id="s900">0.0</th><th id="s800">0.0</th><th id="s600">0.0</th><th id="s400">0.0</th>
+              <th colspan="3"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
