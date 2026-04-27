@@ -58,7 +58,9 @@ function calculatePayout() {
   const payoutPercent = parseFloat(document.getElementById("payout").value) || 0;
 
   const pureGoldGrams = weight * (karat / 24);
-  const pureGoldTroyOz = pureGoldGrams / 31.1035;
+  const pureGoldDWT = weight * (karat / 24);
+const pureGoldTroyOz = pureGoldDWT / 20;
+const payout = pureGoldTroyOz * spot * (payoutPercent / 100);
   const payout = pureGoldTroyOz * spot * (payoutPercent / 100);
 
   document.getElementById("result").innerText = "$" + payout.toFixed(2);
