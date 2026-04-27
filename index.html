@@ -12,128 +12,104 @@ body {
   background:#111;
   color:white;
 }
-
 .header {
-  background:#0b3d13;
+  background:#063b12;
   color:#ffd700;
   padding:18px;
   text-align:center;
-  border-bottom:4px solid #ffd700;
+  border-bottom:5px solid #ffd700;
 }
-
-.header h1 {
-  margin:0;
-  font-size:28px;
-}
-
-.header p {
-  margin:5px 0 0;
-  color:white;
-}
-
+.header h1 { margin:0; font-size:30px; }
+.header p { margin:6px 0 0; color:white; }
 .panel {
   background:#1b1b1b;
   margin:18px;
   padding:18px;
-  border-radius:12px;
-  border:1px solid #333;
+  border-radius:14px;
+  border:1px solid #444;
 }
-
 input, select {
-  background:#fff;
-  color:#000;
+  background:white;
+  color:black;
   padding:10px;
-  border-radius:6px;
+  border-radius:7px;
   border:none;
   width:100%;
   box-sizing:border-box;
   margin:5px 0 12px;
+  font-size:16px;
 }
-
 button {
   background:#ffd700;
   color:#000;
   font-weight:bold;
   border:none;
   padding:12px;
-  border-radius:8px;
+  border-radius:9px;
   width:100%;
   margin:8px 0;
+  font-size:16px;
 }
-
-.hidden {
-  display:none;
-}
-
+.hidden { display:none; }
 .register-top {
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:12px;
 }
-
 .box {
   background:#222;
-  border:1px solid #444;
+  border:1px solid #555;
   padding:12px;
   border-radius:10px;
 }
-
 .balance {
   background:#003b12;
   border:2px solid #ffd700;
   text-align:center;
 }
-
 .balance h2 {
   color:#ffd700;
   margin:5px 0;
 }
-
-.table-wrap {
-  overflow-x:auto;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  color:#000;
-  min-width:900px;
-}
-
-th {
-  background:#0b3d13;
-  color:#ffd700;
-  padding:8px;
-  border:1px solid #222;
-  font-size:13px;
-}
-
-td {
-  border:1px solid #aaa;
-  padding:4px;
-}
-
-td input {
-  margin:0;
-  padding:7px;
-  text-align:center;
-}
-
 .section-title {
   color:#ffd700;
   margin-top:25px;
   border-bottom:1px solid #ffd700;
   padding-bottom:8px;
+  font-size:30px;
 }
-
+.table-wrap { overflow-x:auto; }
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  color:black;
+  min-width:950px;
+}
+th {
+  background:#063b12;
+  color:#ffd700;
+  padding:10px;
+  border:1px solid #222;
+  font-size:15px;
+}
+td {
+  border:1px solid #aaa;
+  padding:4px;
+}
+td input {
+  margin:0;
+  padding:8px;
+  text-align:center;
+  border-radius:0;
+  font-size:16px;
+}
 .totals-grid {
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:12px;
   margin-top:18px;
 }
-
 .total-card {
   background:#222;
   border:1px solid #555;
@@ -141,30 +117,10 @@ td input {
   padding:15px;
   text-align:center;
 }
-
-.total-card p {
-  margin:0;
-  color:#aaa;
-}
-
-.total-card h2 {
-  margin:8px 0 0;
-  color:#ffd700;
-}
-
-.karat-total-table {
-  margin-top:12px;
-}
-
+.total-card p { margin:0; color:#aaa; font-size:18px; }
+.total-card h2 { margin:8px 0 0; color:#ffd700; font-size:34px; }
 @media(max-width:700px) {
-  .register-top,
-  .totals-grid {
-    grid-template-columns:1fr;
-  }
-
-  .header h1 {
-    font-size:22px;
-  }
+  .register-top, .totals-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -269,7 +225,7 @@ td input {
   <h2 class="section-title">Karat Totals — DWT</h2>
 
   <div class="table-wrap">
-    <table class="karat-total-table">
+    <table>
       <tr>
         <th>8K</th><th>9K</th><th>10K</th><th>14K</th>
         <th>18K</th><th>21K</th><th>22K</th><th>24K</th>
@@ -290,15 +246,19 @@ td input {
   <h2 class="section-title">AG — Silver / Checks / Other</h2>
 
   <div class="table-wrap">
-    <table>
-      <tr>
-        <th>Cash Out Notes</th>
-        <th>Amount</th>
-      </tr>
-      <tr>
-        <td><input placeholder="Check, silver, platinum, misc"></td>
-        <td><input type="number" class="cash" oninput="calculateTotals()"></td>
-      </tr>
+    <table id="otherTable">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input placeholder="Check, silver, platinum, misc"></td>
+          <td><input type="number" class="cash" oninput="calculateTotals()"></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -307,21 +267,17 @@ td input {
 </div>
 
 <script>
+const SUPABASE_URL = "https://qkpbmobfwwcygzjxehik.supabase.co";
+const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
 function startRegister() {
   document.getElementById("login").classList.add("hidden");
   document.getElementById("register").classList.remove("hidden");
 
-  document.getElementById("employeeDisplay").value =
-    document.getElementById("employee").value;
-
-  document.getElementById("locationDisplay").value =
-    document.getElementById("location").value;
-
-  document.getElementById("startingCashDisplay").value =
-    document.getElementById("startingCash").value;
-
-  document.getElementById("dateDisplay").value =
-    new Date().toLocaleDateString();
+  document.getElementById("employeeDisplay").value = document.getElementById("employee").value;
+  document.getElementById("locationDisplay").value = document.getElementById("location").value;
+  document.getElementById("startingCashDisplay").value = document.getElementById("startingCash").value;
+  document.getElementById("dateDisplay").value = new Date().toLocaleDateString();
 
   addGoldRow();
   calculateTotals();
@@ -331,9 +287,17 @@ function addGoldRow() {
   const table = document.querySelector("#goldTable tbody");
   const row = document.createElement("tr");
 
+  let receiptNum = 1000;
+  const lastRow = table.lastElementChild;
+
+  if (lastRow) {
+    const lastReceipt = lastRow.querySelector(".receipt")?.value;
+    receiptNum = (parseInt(lastReceipt) || 1000) + 1;
+  }
+
   row.innerHTML = `
     <td><input value="${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}"></td>
-    <td><input placeholder="#"></td>
+    <td><input class="receipt" value="${receiptNum}"></td>
     <td><input type="number" class="cash" oninput="calculateTotals()"></td>
     <td><input type="number" data-karat="8k" oninput="calculateTotals()"></td>
     <td><input type="number" data-karat="9k" oninput="calculateTotals()"></td>
@@ -348,49 +312,118 @@ function addGoldRow() {
   table.appendChild(row);
 }
 
-function calculateTotals() {
+function getRegisterData() {
+  let goldRows = [];
+  let otherRows = [];
   let cashPaid = 0;
   let goldDwt = 0;
 
-  let karatTotals = {
-    "8k":0,"9k":0,"10k":0,"14k":0,
-    "18k":0,"21k":0,"22k":0,"24k":0
+  const karatTotals = {
+    "8k":0, "9k":0, "10k":0, "14k":0,
+    "18k":0, "21k":0, "22k":0, "24k":0
   };
 
-  document.querySelectorAll(".cash").forEach(input => {
-    cashPaid += parseFloat(input.value) || 0;
+  document.querySelectorAll("#goldTable tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("input");
+
+    const item = {
+      time: cells[0]?.value || "",
+      receipt: cells[1]?.value || "",
+      cash: parseFloat(cells[2]?.value) || 0,
+      k8: parseFloat(cells[3]?.value) || 0,
+      k9: parseFloat(cells[4]?.value) || 0,
+      k10: parseFloat(cells[5]?.value) || 0,
+      k14: parseFloat(cells[6]?.value) || 0,
+      k18: parseFloat(cells[7]?.value) || 0,
+      k21: parseFloat(cells[8]?.value) || 0,
+      k22: parseFloat(cells[9]?.value) || 0,
+      k24: parseFloat(cells[10]?.value) || 0
+    };
+
+    cashPaid += item.cash;
+
+    karatTotals["8k"] += item.k8;
+    karatTotals["9k"] += item.k9;
+    karatTotals["10k"] += item.k10;
+    karatTotals["14k"] += item.k14;
+    karatTotals["18k"] += item.k18;
+    karatTotals["21k"] += item.k21;
+    karatTotals["22k"] += item.k22;
+    karatTotals["24k"] += item.k24;
+
+    goldDwt += item.k8 + item.k9 + item.k10 + item.k14 + item.k18 + item.k21 + item.k22 + item.k24;
+
+    goldRows.push(item);
   });
 
-  document.querySelectorAll("[data-karat]").forEach(input => {
-    const val = parseFloat(input.value) || 0;
-    goldDwt += val;
+  document.querySelectorAll("#otherTable tbody tr").forEach(row => {
+    const inputs = row.querySelectorAll("input");
+    const description = inputs[0]?.value || "";
+    const amount = parseFloat(inputs[1]?.value) || 0;
 
-    const k = input.dataset.karat;
-    karatTotals[k] += val;
+    cashPaid += amount;
+
+    otherRows.push({ description, amount });
   });
 
-  const startingCash =
-    parseFloat(document.getElementById("startingCashDisplay").value) || 0;
+  const startingCash = parseFloat(document.getElementById("startingCashDisplay").value) || 0;
+  const endingBalance = startingCash - cashPaid;
 
-  const ending = startingCash - cashPaid;
-
-  document.getElementById("cashPaidTotal").innerText = cashPaid.toFixed(2);
-  document.getElementById("goldDwtTotal").innerText = goldDwt.toFixed(1);
-  document.getElementById("endingBalance").innerText = ending.toFixed(2);
-  document.getElementById("balance").innerText = ending.toFixed(2);
-
-  document.getElementById("total8k").innerText = karatTotals["8k"].toFixed(1);
-  document.getElementById("total9k").innerText = karatTotals["9k"].toFixed(1);
-  document.getElementById("total10k").innerText = karatTotals["10k"].toFixed(1);
-  document.getElementById("total14k").innerText = karatTotals["14k"].toFixed(1);
-  document.getElementById("total18k").innerText = karatTotals["18k"].toFixed(1);
-  document.getElementById("total21k").innerText = karatTotals["21k"].toFixed(1);
-  document.getElementById("total22k").innerText = karatTotals["22k"].toFixed(1);
-  document.getElementById("total24k").innerText = karatTotals["24k"].toFixed(1);
+  return {
+    date: document.getElementById("dateDisplay").value,
+    location: document.getElementById("locationDisplay").value,
+    employee: document.getElementById("employeeDisplay").value,
+    starting_cash: startingCash,
+    cash_paid_total: cashPaid,
+    total_gold_dwt: goldDwt,
+    ending_balance: endingBalance,
+    karat_totals: karatTotals,
+    gold_rows: goldRows,
+    other_rows: otherRows
+  };
 }
 
-function saveRegister() {
-  alert("Saved locally for now. Next step is cloud database saving.");
+function calculateTotals() {
+  const data = getRegisterData();
+
+  document.getElementById("cashPaidTotal").innerText = data.cash_paid_total.toFixed(2);
+  document.getElementById("goldDwtTotal").innerText = data.total_gold_dwt.toFixed(1);
+  document.getElementById("endingBalance").innerText = data.ending_balance.toFixed(2);
+  document.getElementById("balance").innerText = data.ending_balance.toFixed(2);
+
+  document.getElementById("total8k").innerText = data.karat_totals["8k"].toFixed(1);
+  document.getElementById("total9k").innerText = data.karat_totals["9k"].toFixed(1);
+  document.getElementById("total10k").innerText = data.karat_totals["10k"].toFixed(1);
+  document.getElementById("total14k").innerText = data.karat_totals["14k"].toFixed(1);
+  document.getElementById("total18k").innerText = data.karat_totals["18k"].toFixed(1);
+  document.getElementById("total21k").innerText = data.karat_totals["21k"].toFixed(1);
+  document.getElementById("total22k").innerText = data.karat_totals["22k"].toFixed(1);
+  document.getElementById("total24k").innerText = data.karat_totals["24k"].toFixed(1);
+}
+
+async function saveRegister() {
+  calculateTotals();
+
+  const payload = getRegisterData();
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/daily_registers`, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (res.ok) {
+    alert("✅ Register saved to cloud!");
+  } else {
+    const errorText = await res.text();
+    alert("❌ Error saving. Screenshot me the error.");
+    console.log(errorText);
+  }
 }
 </script>
 
