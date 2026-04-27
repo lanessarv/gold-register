@@ -49,7 +49,24 @@
     <button onclick="saveData()">Save to Cloud</button>
   </div>
 </div>
-<script src="app.js"></script>
+<script>
+function calculatePayout() {
+  const weight = parseFloat(document.getElementById("weight").value) || 0;
+  const karat = parseFloat(document.getElementById("karat").value) || 0;
+  const spot = parseFloat(document.getElementById("spot").value) || 0;
+  const payoutPercent = parseFloat(document.getElementById("payout").value) || 0;
+
+  const pureGoldGrams = weight * (karat / 24);
+  const pureGoldTroyOz = pureGoldGrams / 31.1035;
+  const payout = pureGoldTroyOz * spot * (payoutPercent / 100);
+
+  document.getElementById("result").innerText = "$" + payout.toFixed(2);
+}
+
+function saveData() {
+  alert("Save button clicked");
+}
+</script>
 
 
 </body>
