@@ -25,6 +25,29 @@
 
 <div id="app" class="hidden">
   <h1 style="padding:20px">Logged In ✅</h1>
+
+  <div style="padding:20px">
+    <input id="customer" placeholder="Customer Name"><br><br>
+
+    <input id="weight" type="number" placeholder="Weight (grams)" oninput="calculatePayout()"><br><br>
+
+    <select id="karat" onchange="calculatePayout()">
+      <option value="10">10K</option>
+      <option value="14">14K</option>
+      <option value="18">18K</option>
+      <option value="22">22K</option>
+      <option value="24">24K</option>
+    </select><br><br>
+
+    <input id="spot" type="number" placeholder="Gold Spot Price" oninput="calculatePayout()"><br><br>
+
+    <input id="payout" type="number" placeholder="Payout %" value="90" oninput="calculatePayout()"><br><br>
+
+    <h2>Total Payout:</h2>
+    <h1 id="result">$0.00</h1>
+
+    <button onclick="saveData()">Save to Cloud</button>
+  </div>
 </div>
 
 <script type="module" src="app.js"></script>
