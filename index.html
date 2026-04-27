@@ -3,208 +3,181 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cash Out Gold Register</title>
-<link rel="stylesheet" href="style.css">
+<title>Gold Register</title>
+
+<style>
+body { font-family: Arial; padding:20px; }
+input, select, button { padding:10px; margin:5px 0; width:100%; }
+button { background:black; color:white; border:none; border-radius:8px; }
+
+.hidden { display:none; }
+
+table { width:100%; border-collapse: collapse; margin-top:10px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+
+.totals { margin-top:20px; }
+</style>
 </head>
 
 <body>
 
-<div class="top-banner">
-  <div class="logo">WE BUY GOLD</div>
-  <div class="title">
-    <h1>Cash Out Gold & Silver</h1>
-    <p>Digital Store Register</p>
-  </div>
-</div>
+<h1>Cash Out Gold & Silver</h1>
 
-<div class="login-panel">
+<!-- LOGIN -->
+<div id="login">
   <h2>Store Login</h2>
-  <select id="location">
-    <option>Fort Pierce</option>
-    <option>Vero Beach</option>
-    <option>Port St. Lucie</option>
-  </select>
-
   <input id="employee" placeholder="Employee Name">
-  <input id="startingCash" type="number" placeholder="Starting Cash">
+  <input id="startingCash" placeholder="Starting Cash">
   <button onclick="startRegister()">Open Register</button>
 </div>
 
+<!-- REGISTER -->
 <div id="register" class="hidden">
 
-  <div class="register-header">
-    <div>
-      <label>Date</label>
-      <input id="date" type="date">
-    </div>
+  <h2>Logged In ✅</h2>
 
-    <div>
-      <label>Employee</label>
-      <input id="employeeDisplay">
-    </div>
+  <p>Date: <span id="date"></span></p>
 
-    <div>
-      <label>Starting Cash</label>
-      <input id="startingCashDisplay" type="number" oninput="calculateTotals()">
-    </div>
+  <p>Employee</p>
+  <input id="employeeDisplay">
 
-    <div class="balance-box">
-      <p>Balance</p>
-      <h2 id="balance">$0.00</h2>
-    </div>
-  </div>
+  <p>Starting Cash</p>
+  <input id="startingCashDisplay">
+
+  <h2>Balance: $<span id="balance">0.00</span></h2>
 
   <h2>AU — Gold Purchases</h2>
 
-  <div class="table-wrap">
-    <table id="goldTable">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Receipt #</th>
-          <th>Cash Paid</th>
-          <th>8K</th>
-          <th>9K</th>
-          <th>10K</th>
-          <th>14K</th>
-          <th>18K</th>
-          <th>21K</th>
-          <th>22K</th>
-          <th>24K</th>
-          <th>Other</th>
-        </tr>
-      </thead>
-      <tbody id="goldBody"></tbody>
-    </table>
-  </div>
-
   <button onclick="addGoldRow()">+ Add Gold Transaction</button>
 
+  <table id="goldTable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Receipt</th>
+        <th>Cash Paid</th>
+        <th>8K</th>
+        <th>9K</th>
+        <th>10K</th>
+        <th>14K</th>
+        <th>18K</th>
+        <th>21K</th>
+        <th>22K</th>
+        <th>24K</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <div class="totals">
-    <div>
-      <p>Cash Paid Today</p>
-      <h2 id="cashPaidTotal">$0.00</h2>
-    </div>
-
-    <div>
-      <p>Total Gold DWT</p>
-      <h2 id="goldDwtTotal">0.0</h2>
-    </div>
-
-    <div>
-      <p>Ending Balance</p>
-      <h2 id="endingBalance">$0.00</h2>
-    </div>
+    <p>Cash Paid Today: $<span id="cashPaidTotal">0.00</span></p>
+    <p>Total Gold DWT: <span id="goldDwtTotal">0.0</span></p>
+    <p>Ending Balance: $<span id="endingBalance">0.00</span></p>
   </div>
 
-  <h2>Checks</h2>
-  <div class="checks">
-    <input placeholder="Check memo">
-    <input type="number" placeholder="Amount" oninput="calculateTotals()">
-    <input placeholder="Check memo">
-    <input type="number" placeholder="Amount" oninput="calculateTotals()">
-  </div>
-
-  <h2>AG — Silver Purchases</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Receipt #</th>
-          <th>Cash Paid</th>
-          <th>SS .999</th>
-          <th>SS .925</th>
-          <th>SS .900</th>
-          <th>Other</th>
-        </tr>
-      </thead>
-      <tbody id="silverBody"></tbody>
-    </table>
-  </div>
-
-  <button onclick="addSilverRow()">+ Add Silver Transaction</button>
-
-  <br><br>
-  <button onclick="saveRegister()">Save Daily Register</button>
+  <h3>Karat Totals (DWT)</h3>
+  <table>
+    <tr>
+      <th>8K</th><th>9K</th><th>10K</th><th>14K</th>
+      <th>18K</th><th>21K</th><th>22K</th><th>24K</th>
+    </tr>
+    <tr>
+      <td id="total8k">0</td>
+      <td id="total9k">0</td>
+      <td id="total10k">0</td>
+      <td id="total14k">0</td>
+      <td id="total18k">0</td>
+      <td id="total21k">0</td>
+      <td id="total22k">0</td>
+      <td id="total24k">0</td>
+    </tr>
+  </table>
 
 </div>
 
 <script>
-document.getElementById("date").valueAsDate = new Date();
 
 function startRegister() {
+  document.getElementById("login").classList.add("hidden");
   document.getElementById("register").classList.remove("hidden");
-  document.getElementById("employeeDisplay").value = document.getElementById("employee").value;
-  document.getElementById("startingCashDisplay").value = document.getElementById("startingCash").value;
-  addGoldRow();
-  addSilverRow();
-  calculateTotals();
+
+  document.getElementById("employeeDisplay").value =
+    document.getElementById("employee").value;
+
+  document.getElementById("startingCashDisplay").value =
+    document.getElementById("startingCash").value;
+
+  document.getElementById("date").innerText = new Date().toLocaleDateString();
+
+  addGoldRow(); // auto first row
 }
 
 function addGoldRow() {
-  const tbody = document.getElementById("goldBody");
+  const table = document.querySelector("#goldTable tbody");
+
   const row = document.createElement("tr");
 
   row.innerHTML = `
-    <td><input value="${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}"></td>
-    <td><input placeholder="#"></td>
-    <td><input type="number" class="cashPaid" placeholder="0" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
-    <td><input type="number" class="goldDwt" oninput="calculateTotals()"></td>
     <td><input></td>
+    <td><input></td>
+    <td><input type="number" class="cash" oninput="calculateTotals()"></td>
+
+    <td><input type="number" data-karat="8k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="9k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="10k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="14k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="18k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="21k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="22k" oninput="calculateTotals()"></td>
+    <td><input type="number" data-karat="24k" oninput="calculateTotals()"></td>
   `;
 
-  tbody.appendChild(row);
-}
-
-function addSilverRow() {
-  const tbody = document.getElementById("silverBody");
-  const row = document.createElement("tr");
-
-  row.innerHTML = `
-    <td><input value="${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}"></td>
-    <td><input placeholder="#"></td>
-    <td><input type="number" class="cashPaid" placeholder="0" oninput="calculateTotals()"></td>
-    <td><input type="number"></td>
-    <td><input type="number"></td>
-    <td><input type="number"></td>
-    <td><input></td>
-  `;
-
-  tbody.appendChild(row);
+  table.appendChild(row);
 }
 
 function calculateTotals() {
+
   let cashPaid = 0;
   let goldDwt = 0;
 
-  document.querySelectorAll(".cashPaid").forEach(input => {
+  let karatTotals = {
+    "8k":0,"9k":0,"10k":0,"14k":0,
+    "18k":0,"21k":0,"22k":0,"24k":0
+  };
+
+  document.querySelectorAll(".cash").forEach(input => {
     cashPaid += parseFloat(input.value) || 0;
   });
 
-  document.querySelectorAll(".goldDwt").forEach(input => {
-    goldDwt += parseFloat(input.value) || 0;
+  document.querySelectorAll("[data-karat]").forEach(input => {
+    const val = parseFloat(input.value) || 0;
+    goldDwt += val;
+
+    const k = input.dataset.karat;
+    karatTotals[k] += val;
   });
 
-  const startingCash = parseFloat(document.getElementById("startingCashDisplay").value) || 0;
-  const endingBalance = startingCash - cashPaid;
+  const startingCash =
+    parseFloat(document.getElementById("startingCashDisplay").value) || 0;
 
-  document.getElementById("cashPaidTotal").innerText = "$" + cashPaid.toFixed(2);
+  const ending = startingCash - cashPaid;
+
+  document.getElementById("cashPaidTotal").innerText = cashPaid.toFixed(2);
   document.getElementById("goldDwtTotal").innerText = goldDwt.toFixed(1);
-  document.getElementById("endingBalance").innerText = "$" + endingBalance.toFixed(2);
-  document.getElementById("balance").innerText = "$" + endingBalance.toFixed(2);
+  document.getElementById("endingBalance").innerText = ending.toFixed(2);
+  document.getElementById("balance").innerText = ending.toFixed(2);
+
+  // KARAT TOTALS
+  document.getElementById("total8k").innerText = karatTotals["8k"].toFixed(1);
+  document.getElementById("total9k").innerText = karatTotals["9k"].toFixed(1);
+  document.getElementById("total10k").innerText = karatTotals["10k"].toFixed(1);
+  document.getElementById("total14k").innerText = karatTotals["14k"].toFixed(1);
+  document.getElementById("total18k").innerText = karatTotals["18k"].toFixed(1);
+  document.getElementById("total21k").innerText = karatTotals["21k"].toFixed(1);
+  document.getElementById("total22k").innerText = karatTotals["22k"].toFixed(1);
+  document.getElementById("total24k").innerText = karatTotals["24k"].toFixed(1);
 }
 
-function saveRegister() {
-  alert("Register saved locally for now. Next step is connecting this to Supabase.");
-}
 </script>
 
 </body>
