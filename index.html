@@ -29,7 +29,7 @@
   <div style="padding:20px">
     <input id="customer" placeholder="Customer Name"><br><br>
 
-    <input id="weight" type="number" placeholder="Weight (grams)" oninput="calculatePayout()"><br><br>
+    <input id="weight" type="number" placeholder="Weight (DWT)" oninput="calculatePayout()">
 
     <select id="karat" onchange="calculatePayout()">
       <option value="10">10K</option>
@@ -49,6 +49,7 @@
     <button onclick="saveData()">Save to Cloud</button>
   </div>
 </div>
+
 <script>
 function calculatePayout() {
   const weight = parseFloat(document.getElementById("weight").value) || 0;
@@ -67,7 +68,6 @@ function saveData() {
   alert("Save button clicked");
 }
 </script>
-
 
 </body>
 </html>
