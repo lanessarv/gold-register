@@ -1,30 +1,25 @@
 const SUPABASE_URL = "https://qkpbmobfwwcygzjxehik.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrcGJtb2Jmd3djeWd6anhlaGlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjA4MzAsImV4cCI6MjA5Mjc5NjgzMH0.C0mPGmPiO24SvrsIAMs27qTR8X5VxfOuk9cbHQ2PIkk";
+const SUPABASE_KEY = "YOUR_ANON_KEY_HERE";
 
-async function saveData() {
-  const date = document.querySelector("input[type='date']")?.value || new Date().toISOString();
-  const employee = document.querySelector("input[placeholder='Employee name']")?.value;
-  const starting_cash = document.querySelector("input[placeholder='0.00']")?.value;
+window.calculatePayout = function () {
+  const weight = parseFloat(document.getElementById("weight").value) || 0;
+  const karat = parseFloat(document.getElementById("karat").value) || 0;
+  const spot = parseFloat(document.getElementById("spot").value) || 0;
+  const payoutPercent = parseFloat(document.getElementById("payout").value) || 0;
 
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/registers`, {
-    method: "POST",
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json",
-      "Prefer": "return=minimal"
-    },
-    body: JSON.stringify({
-      date,
-      employee,
-      starting_cash
-    })
-  });
+  const purity = karat / 24;
+  const pureGoldGrams = weight * purity;
+  const pureGoldTroyOz = pureGoldGrams / 31.1035;
+  const meltValue = pureGoldTroyOz * spot;
+  const payout = meltValue * (payoutPercent / 100);
 
-  if (response.ok) {
-    alert("✅ Saved to cloud!");
-  } else {
-    alert("❌ Error saving");
-    console.log(await response.text());
-  }
-}
+  document.getElementById("result").innerText = "$" + payout.toFixed(2);
+};
+
+window.saveData = async function () {
+  alert("Save button works. Next we connect this to the correct Supabase table.");
+};
+
+document.getElementById("loginBtn")?.addEventListener("click", function () {
+  document.getElementById("app").classList.remove("hidden");
+});
